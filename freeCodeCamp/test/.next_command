@@ -90,3 +90,6 @@ touch stylles.css
 touch stylles.css
 touch styles.css
 ls --color=auto
+rm stylles.css
+ls --color=auto
+touch index.js
