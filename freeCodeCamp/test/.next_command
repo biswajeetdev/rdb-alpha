@@ -78,3 +78,4 @@ cd ..
 __vsc_prompt_cmd_original
 pwd
 cd ../..
+ls --color=auto
