@@ -206,3 +206,8 @@ find -name CodeAlly.svg
 find
 mv CodeAlly.svg ./client/assets/icons
 find
+find Coderoad
+find -name Coderoad
+find -name CodeRoad
+find
+mv CodeRoad.svg ./client/assets/icons
