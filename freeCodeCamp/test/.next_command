@@ -198,3 +198,7 @@ find ./images
 rm ./images/background.jpg
 rmdir ./images
 ls --color=auto
+ls --color=auto
+find
+mkdir icons ./client/assets
+mkdir client/assets/icons
