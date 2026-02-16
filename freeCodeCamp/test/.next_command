@@ -194,3 +194,5 @@ find
 find -name images
 ls --color=auto
 rmdir ./images
+find ./images
+rm ./images/background.jpg
