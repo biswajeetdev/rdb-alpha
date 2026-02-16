@@ -229,3 +229,5 @@ find
 rm -help
 rm --help
 rm -r fonts
+find
+ls --color=auto
