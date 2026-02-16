@@ -245,3 +245,4 @@ echo I made this boilerplate! >> README.md
 cho I made this boilerplate >> README.md
 echo I made this boilerplate >> README.md
 more README.md
+echo from the command line >> README.md
