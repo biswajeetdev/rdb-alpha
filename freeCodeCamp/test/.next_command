@@ -223,3 +223,4 @@ find
 rm ./roboto-bold.woff
 find
 find client/assets/fonts
+touch client/assets/fonts/lato-bold.ttf
