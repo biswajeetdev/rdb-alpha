@@ -180,3 +180,4 @@ cd ..
 ls --color=auto
 find
 find -name images
+mv header.png ./client/assets/images
