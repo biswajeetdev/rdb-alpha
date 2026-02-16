@@ -53,3 +53,8 @@ __vsc_prompt_cmd_original
 more package.json
 clear
 ls --color=auto
+more test
+more package.json
+pwd node_modules
+ls --color=auto
+cd node_modules
