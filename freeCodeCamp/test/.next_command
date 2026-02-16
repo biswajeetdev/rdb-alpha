@@ -163,3 +163,5 @@ find -name src
 find -name website
 find
 __vsc_prompt_cmd_original
+ls --color=auto
+cd client
