@@ -93,3 +93,4 @@ ls --color=auto
 rm stylles.css
 ls --color=auto
 touch index.js
+touch .gitignore
