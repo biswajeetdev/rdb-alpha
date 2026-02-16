@@ -89,3 +89,4 @@ touch index.html
 touch stylles.css
 touch stylles.css
 touch styles.css
+ls --color=auto
