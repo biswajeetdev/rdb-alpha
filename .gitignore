@@ -1,0 +1,6 @@
+rdb.json
+rdb.json.tmp
+__pycache__/
+*.pyc
+.venv/
+venv/
