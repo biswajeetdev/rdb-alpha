@@ -206,6 +206,8 @@ class RespParser:
         if end == -1:
             return None, buf
         length = int(buf[1:end])
+        if length > 512 * 1024 * 1024:
+            raise ValueError("value too large (max 512 MB)")
         buf = buf[end + 2:]
         if len(buf) < length + 2:
             return None, buf
@@ -271,13 +273,23 @@ def handle(args: list[str], dump_path: str | None) -> bytes:
 
         if cmd == "INCR":
             val = store.get(args[1])
-            n = int(val) + 1 if val is not None else 1
+            if val is not None and not isinstance(val, str):
+                return encode_err("value is not an integer or out of range")
+            try:
+                n = (int(val) if val is not None else 0) + 1
+            except ValueError:
+                return encode_err("value is not an integer or out of range")
             store.set(args[1], str(n))
             return encode(n)
 
         if cmd == "DECR":
             val = store.get(args[1])
-            n = int(val) - 1 if val is not None else -1
+            if val is not None and not isinstance(val, str):
+                return encode_err("value is not an integer or out of range")
+            try:
+                n = (int(val) if val is not None else 0) - 1
+            except ValueError:
+                return encode_err("value is not an integer or out of range")
             store.set(args[1], str(n))
             return encode(n)
 
@@ -444,6 +456,14 @@ async def main(host: str, port: int, dump_path: str | None):
                 await asyncio.sleep(60)
                 _persist(dump_path)
         loop.create_task(auto_save())
+
+    # Background expiry sweep — purge keys that expired but were never accessed
+    async def expiry_sweep():
+        while True:
+            await asyncio.sleep(10)
+            for k in list(store._data):
+                store._expired(k)
+    loop.create_task(expiry_sweep())
 
     def shutdown():
         log.info("Shutting down...")
