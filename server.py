@@ -321,15 +321,27 @@ def handle(args: list[str], dump_path: str | None) -> bytes:
             lst = store.get(args[1])
             if lst is None:
                 return encode(0)
+            if not isinstance(lst, list):
+                return encode_err("WRONGTYPE Operation against a key holding the wrong kind of value")
             return encode(len(lst))
 
         if cmd == "LRANGE":
             if len(args) != 4:
                 return encode_err("wrong number of arguments for LRANGE")
-            lst = store.get(args[1]) or []
+            lst = store.get(args[1])
+            if lst is None:
+                return encode([])
+            if not isinstance(lst, list):
+                return encode_err("WRONGTYPE Operation against a key holding the wrong kind of value")
+            length = len(lst)
             start, stop = int(args[2]), int(args[3])
-            if stop == -1:
-                stop = len(lst)
+            # Redis negative-index semantics: -1 = last element, -2 = second-to-last, etc.
+            if start < 0:
+                start = max(0, length + start)
+            if stop < 0:
+                stop = length + stop
+            if start > stop or start >= length:
+                return encode([])
             return encode(lst[start:stop + 1])
 
         if cmd == "HSET":
@@ -355,7 +367,11 @@ def handle(args: list[str], dump_path: str | None) -> bytes:
             return encode(h.get(args[2]))
 
         if cmd == "HGETALL":
-            h = store.get(args[1]) or {}
+            h = store.get(args[1])
+            if h is None:
+                return encode([])
+            if not isinstance(h, dict):
+                return encode_err("WRONGTYPE Operation against a key holding the wrong kind of value")
             flat = []
             for k, v in h.items():
                 flat.extend([k, v])
